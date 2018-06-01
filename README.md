@@ -1,2 +1,2 @@
 # 2048
-2048 game on Android
+Gesture controlled 2048 game on Android
