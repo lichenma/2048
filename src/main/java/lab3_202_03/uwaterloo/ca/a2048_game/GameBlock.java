@@ -1,6 +1,7 @@
 package lab3_202_03.uwaterloo.ca.a2048_game;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.AppCompatImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,9 +16,8 @@ class GameBlock extends android.support.v7.widget.AppCompatImageView {
     private float velocityX;
     private float positionY;
     private float velocityY;
-    public boolean merged;
     public boolean erased;
-    public boolean moving=false;
+    public boolean moving;
     Random r=new Random();
     protected int value=2*(r.nextInt(2)+1);
     private float LEFT_BOUND=-74f;
@@ -50,6 +50,7 @@ class GameBlock extends android.support.v7.widget.AppCompatImageView {
         bringToFront();
         myr1.addView(tv1);
         erased=false;
+        moving=true;
     }
 
     public void setDirection(String input){
@@ -103,7 +104,9 @@ class GameBlock extends android.support.v7.widget.AppCompatImageView {
 
     public void move(){
         //Constant Velocity Displacement
-        moving=true;
+        if ((positionX!=LEFT_BOUND&&positionX!=RIGHT_BOUND)||(positionY!=UPPER_BOUND&&positionY!=LOWER_BOUND)){
+            moving=true;
+        }
         positionX += velocityX;
 
         //Boundary Checking
@@ -178,7 +181,20 @@ class GameBlock extends android.support.v7.widget.AppCompatImageView {
         value=value*2;
         tv1.setText(String.format("%d",value));
         this.erased=false;
+        //------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //game win condition
+        if (value==2048){
+            TextView tv5=new TextView(getContext());
+            tv5.setText("You Win!");
+            tv5.setTextSize(40);
+            tv5.setTextColor(Color.BLACK);
+            myr1.addView(tv5);
+            bringToFront();
+        }
+
+        //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
     }
+
 
     public int getnumber(){
         return value;
